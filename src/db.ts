@@ -1,4 +1,4 @@
-import { MongoClient, type Db, type ObjectId } from "mongodb";
+import { MongoClient, type Db, type ObjectId } from 'mongodb';
 
 export interface Book {
   _id?: ObjectId;
@@ -30,19 +30,19 @@ let dbPromise: Promise<Db> | null = null;
 export function getDb(): Promise<Db> {
   if (!dbPromise) {
     const uri = process.env.MONGODB_URI;
-    if (!uri) throw new Error("MONGODB_URI is not set");
+    if (!uri) throw new Error('MONGODB_URI is not set');
     dbPromise = new MongoClient(uri)
       .connect()
-      .then(async (client) => {
-        const db = client.db(process.env.MONGODB_DB || "booknook");
-        await db.collection("books").createIndex({ createdAt: -1 });
+      .then(async client => {
+        const db = client.db(process.env.MONGODB_DB || 'booknook');
+        await db.collection('books').createIndex({ createdAt: -1 });
         // One active borrow per user per book (blocks double borrow even under race conditions)
         await db
-          .collection("borrows")
+          .collection('borrows')
           .createIndex({ bookId: 1, userEmail: 1 }, { unique: true });
         return db;
       })
-      .catch((err) => {
+      .catch(err => {
         dbPromise = null;
         throw err;
       });
@@ -50,5 +50,6 @@ export function getDb(): Promise<Db> {
   return dbPromise;
 }
 
-export const books = async () => (await getDb()).collection<Book>("books");
-export const borrows = async () => (await getDb()).collection<Borrow>("borrows");
+export const books = async () => (await getDb()).collection<Book>('books');
+export const borrows = async () =>
+  (await getDb()).collection<Borrow>('borrows');
