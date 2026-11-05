@@ -9,10 +9,6 @@ export interface AuthUser {
 
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 
-/**
- * Verifies the JWT issued by BetterAuth (jwt plugin) on the Next.js app.
- * Public keys come from <AUTH_URL>/api/auth/jwks.
- */
 export const verifyJwt: RequestHandler = async (
   req: Request,
   res: Response,
