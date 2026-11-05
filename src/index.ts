@@ -24,7 +24,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ message: "Something went wrong on the server" });
 });
 
-const port = Number(process.env.PORT) || 5000;
+const port = Number(process.env.PORT) || 5001;
 if (!process.env.VERCEL) {
   app.listen(port, () => console.log(`BookNook API running on port ${port}`));
 }
